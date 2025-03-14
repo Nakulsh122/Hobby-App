@@ -7,6 +7,7 @@ const AuthLogin =async (req,res)=>{
     try {
         const {username , password} = req.body 
         const user = await User.findOne({username});
+        console.log(user)
         if(!user){
             return res.status(404).json({error : true , message : "The user does not exist"})
         }
