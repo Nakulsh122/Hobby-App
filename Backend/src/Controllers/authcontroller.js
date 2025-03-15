@@ -7,7 +7,7 @@ const AuthLogin =async (req,res)=>{
     try {
         const {username , password} = req.body 
         const user = await User.findOne({username});
-        console.log(user)
+        // console.log(user)
         if(!user){
             return res.status(404).json({error : true , message : "The user does not exist"})
         }
@@ -17,7 +17,11 @@ const AuthLogin =async (req,res)=>{
             id : user._id,
             username : user.username
         },process.env.JWT_SECRET,{expiresIn : process.env.JWT_EXPIRES_IN})
-        res.status(200).json({error : false , message : "User Logged In successfully" , data : token})
+        const refreshtoken = jwt.sign({
+            id : user._id,
+            usernsmae : user.username
+        },process.env.JWT_REFRESH_KEY , {expiresIn : "24h"})
+        res.status(200).json({error : false , message : "User Logged In successfully" ,token,refreshtoken})
     } catch (error) {
         res.status(500).json({error : true , message : error.message})
     }

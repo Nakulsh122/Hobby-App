@@ -1,62 +1,71 @@
-const User = require('../DB/UserModal')
+const User = require("../DB/UserModal");
+const bcrypt = require("bcryptjs");
 
+const GetAllUsers = async (req, res) => {
+  try {
+    const Users = await User.find({});
+    res.status(200).json({ error: false, data: Users });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
 
-const GetAllUsers =async (req,res)=>{
-    try {
-        const Users = await User.find({});
-        res.status(200).json({ error: false, data: Users });
-      } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
-      }
-}
+const GetUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ResUser = await User.findById(id);
+    res.status(200).json({ error: false, data: ResUser });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
 
-const GetUserById = async (req, res) =>{
-    try {
-        const { id } = req.params;
-        const ResUser = await User.findById(id);
-        res.status(200).json({ error: false, data: ResUser });
-      } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
-      }
-}
+const UpdateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let updateData = { ...req.body };
 
-const UpdateUser = async (req,res) =>{
-     try {
-        const { id } = req.params;
-        const user = await User.findByIdAndUpdate(id, req.body);
-        // console.log(user)
-        if (!user) {
-          return res
-            .status(404)
-            .json({ error: true, message: "The requested User does not exist" });
-        }
-        const Udpated = await User.findById(id);
-        res
-          .status(200)
-          .json({ error: false, message: "User successfully updated" });
-      } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
-      }
-}
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(req.body.password, salt);
+    }
 
-const DeleteUser = async(req,res) =>{
-    try {
-        const { id } = req.params;
-        const Del = await User.findByIdAndDelete(id);
-        if (!Del) {
-          return res.status(404).json({ error: true, message: "User Not Found" });
-        }
-        res
-          .status(200)
-          .json({ error: false, message: "The User is succesfully Deleted" });
-      } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
-      }
-}
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ error: true, message: "The requested User does not exist" });
+    }
+
+    return res
+      .status(200)
+      .json({ error: false, message: "User successfully updated" });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: error.message });
+  }
+};
+
+const DeleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Del = await User.findByIdAndDelete(id);
+    if (!Del) {
+      return res.status(404).json({ error: true, message: "User Not Found" });
+    }
+    res
+      .status(200)
+      .json({ error: false, message: "The User is succesfully Deleted" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
 
 module.exports = {
-    GetAllUsers,
-    GetUserById,
-    DeleteUser,
-    UpdateUser
-}
+  GetAllUsers,
+  GetUserById,
+  DeleteUser,
+  UpdateUser,
+};
