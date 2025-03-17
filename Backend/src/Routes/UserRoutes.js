@@ -4,13 +4,13 @@ const {AuthLogin , AuthRegister} = require('../Controllers/authcontroller')
 const Router = express.Router()
 const {validate,refreshJWTToken} = require('../Controllers/ValidationController')
 // Login and Registering 
-Router.post("/login",validate,AuthLogin)
-Router.post("/register",validate,AuthRegister)
+Router.post("/login",AuthLogin)
+Router.post("/register",AuthRegister)
 Router.post("/refresh",validate,refreshJWTToken)
 
 // user API's
 Router.get("/", validate,GetAllUsers)
-Router.get(":id",validate,GetUserById)
+Router.get("/:id",validate,GetUserById)
 Router.delete("/:id",validate,DeleteUser)
 Router.put("/:id",validate,UpdateUser)
 

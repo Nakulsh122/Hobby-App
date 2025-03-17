@@ -1,5 +1,6 @@
 const User = require("../DB/UserModal");
 const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose')
 
 const GetAllUsers = async (req, res) => {
   try {
@@ -13,6 +14,9 @@ const GetAllUsers = async (req, res) => {
 const GetUserById = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(400).json({ error: true, message: "User Id invalid" });
     const ResUser = await User.findById(id);
     res.status(200).json({ error: false, data: ResUser });
   } catch (error) {

@@ -2,7 +2,7 @@ import React from 'react'
 
 const PROGRESSHOBBYCARD = () => {
   return (
-    <div className='flex-col space-y-5 font-mono bg-slate-100 w-72  rounded-md p-3'>
+    <div className='flex-col space-y-5 font-mono bg-slate-100 w-64  rounded-md p-3'>
       <div >
       <h1 className='font-mono font-bold text-lg'>Name of Hobby</h1>
       <p>Date Started : </p>

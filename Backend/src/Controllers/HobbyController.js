@@ -7,8 +7,8 @@ const GetAllHobbies = async (req, res) => {
     // console.log(userId)s
     if (!mongoose.Types.ObjectId.isValid(userId))
       return res.status(400).json({ error: true, message: "User Id invalid" });
-    const userHobbies = await Hobbies.find({ userId: userId });
-    if (userHobbies.length === 0)
+    const data = await Hobbies.find({ userId: userId });
+    if (data.length === 0)
       return res
         .status(404)
         .json({ error: true, message: "No hobbies found for the user" });
@@ -17,7 +17,7 @@ const GetAllHobbies = async (req, res) => {
       .json({
         error: false,
         message: "All hobbies successfully fetched",
-        userHobbies,
+        data,
       });
   } catch (error) {
     res.status(500).json({ error: true, message: error.message });

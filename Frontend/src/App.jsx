@@ -11,9 +11,16 @@ const App = () => {
     <div className='min-h-screen width-screen transition-color bg-[#000015]'>
       <NAVBAR />
       {/* <PROFILE /> */}
+      {/* container for the appliction */}
+      <div className='flex'>
+      <div>
+      <PROFILE/>
+      </div>
+      <div className='grid'>
       <STREAKHOBBYCARD />
       <PROGRESSHOBBYCARD/>
-      <PROFILE/>
+      </div>
+      </div>
     </div>
   )
 }
