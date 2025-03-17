@@ -1,12 +1,12 @@
 import callAPI from "./callAPI";
-import jwtDecode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 const url_user = "http://localhost:5000/api/v1/user"
 const url_hobbies = "http://localhost:5000/api/v1/hobby"
 
 const decode_token = (token)=>{
     const decoded_token = jwtDecode(token);
-    return decoded_token;
+    return decoded_token.userId;
 }
 
 const getUserData =async(userId)=>{
@@ -18,7 +18,7 @@ const getUserData =async(userId)=>{
     return response,hobbies;
 }
 
-const calc_level = (points)=>{
+const calculate_level = (points)=>{
     const level = Math.floor(points/1000);
     const left_points = points%1000;
     const percentage = (left_points/1000)*100
@@ -32,8 +32,8 @@ const calc_level = (points)=>{
 i need to get the user data then send the request to get all hobbies , setup user page for the level,decode the token 
 */
 
-module.exports = {
-    getUserData,
+export default {
     decode_token,
-    calc_level
+    getUserData,
+    calculate_level
 }

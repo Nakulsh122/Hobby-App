@@ -1,26 +1,20 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import NAVBAR from './Components/Navbar'
-import PROFILE from './Pages/Profile'
-import STREAKHOBBYCARD from './Components/StreakHobbyCard'
-import PROGRESSHOBBYCARD from './Components/ProgressHobbyCard'
 
+import './App.css'
+import LOGIN from './Pages/Login'
+import REG from './Pages/Register'
+import HOMEPAGE from './Pages/HOMEPAGE'
 
 const App = () => {
   return (
-    <div className='min-h-screen width-screen transition-color bg-[#000015]'>
-      <NAVBAR />
-      {/* <PROFILE /> */}
-      {/* container for the appliction */}
-      <div className='flex'>
-      <div>
-      <PROFILE/>
-      </div>
-      <div className='grid'>
-      <STREAKHOBBYCARD />
-      <PROGRESSHOBBYCARD/>
-      </div>
-      </div>
+    <div className='min-h-screen w-full transition-color bg-[#000015]'>
+      <Routes>
+        <Route path='/' element={<LOGIN/>}/>
+        <Route path='/register' element={<REG/>}/>
+        <Route path='/home' element={<HOMEPAGE/>}/>
+      </Routes>
     </div>
   )
 }

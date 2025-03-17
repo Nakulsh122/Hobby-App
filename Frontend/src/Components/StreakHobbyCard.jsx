@@ -1,4 +1,5 @@
 import React from 'react'
+import { Trash } from 'lucide-react';
 
 const STREAKHOBBYCARD = () => {
   return (
@@ -10,7 +11,11 @@ const STREAKHOBBYCARD = () => {
       <p>Longest Streak : </p>
       <p>Current Streak :</p>
       </div>
-    <button className='w-[100%] bg-blue-600 text-white font-bold py-2 rounded-md hover:opacity-90 active:opacity-95'>Add Streak</button>  
+      <div className='flex-col space-y-2'>
+
+<button className='w-[100%] bg-blue-600 text-white font-bold py-2 rounded-md hover:opacity-90 active:opacity-95'>Add Streak</button>  
+<button className='w-[100%] bg-red-600 text-white font-bold py-2 rounded-md hover:opacity-90 active:opacity-95 flex items-center justify-center'><Trash className='size-5 '/><span>Delete</span></button>  
+  </div> 
     </div>
     </>
   );
