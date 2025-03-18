@@ -39,7 +39,10 @@ const AuthRegister =async (req,res) =>{
         const NewUser = {
             username : username,
             email : email,
-            password : hashedPassword
+            password : hashedPassword,
+            total_xp : 0,
+            total_hobbies : 0,
+            completed_hobbies : 0
         }
         User.create(NewUser)
         
