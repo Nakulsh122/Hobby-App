@@ -13,8 +13,8 @@ const LOGIN = () => {
             username : username,
             password : password
         }
-        const response = await callAPI(login_url,"POST",user);
-        console.log(response)
+        const response = await callAPI(login_url,"POST",user,"LOGIN");
+        // console.log(response)
         localStorage.setItem("Token",response.data.token);
         localStorage.setItem("RefreshToken",response.data.refreshtoken)
         navigate('/home')

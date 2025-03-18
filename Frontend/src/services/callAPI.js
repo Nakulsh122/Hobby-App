@@ -1,14 +1,15 @@
 import axios from 'axios';
 
 const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
+    console.log(url,body,LOG_REG,method,token)
     switch (method) {
         case "POST":
             try {
-                if(LOG_REG == "Login" || LOG_REG =="Reg"){
+                if(LOG_REG == "LOGIN" || LOG_REG =="REG"){
 
                     const response = await axios.post(url,body);
                     if(response){
-                        // console.log(response)
+                        console.log(response)
                         return response;
                     }
                 }else {
@@ -17,8 +18,10 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
                             authorization : `Bearer ${token}`
                         }
                     })
-                    if(response){
-                        return response
+                    if(response.error == false){
+                        return response;
+                    }else {
+                        console.log(response.message);
                     }
                 }
             } catch (error) {
@@ -29,11 +32,11 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
             try {
                 const response = await axios.get(url,{
                     headers : {
-                        authoriztion : `Bearer ${token}`
+                        authorization : `Bearer ${token}`
                     }
                 });
-                if(response.len >0){
-                    return response
+                if(response){
+                    return response.data.data
                 }
             } catch (error) {
                 console.log("Error occured : ",error.message)
@@ -43,7 +46,7 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
             try{
                 const response = await axios.put(url,body,{
                     headers : {
-                        authoriztion : `Bearer ${token}`
+                        authorization : `Bearer ${token}`
                     }
                 });
                 if(response){
@@ -57,7 +60,7 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
             try {
                 const response = await axios.put(url,{
                     headers : {
-                        authoriztion : `Bearer ${token}`
+                        authorization : `Bearer ${token}`
                     }
                 })
                     if(response){

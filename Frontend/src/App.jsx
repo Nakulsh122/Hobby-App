@@ -6,7 +6,7 @@ import './App.css'
 import LOGIN from './Pages/Login'
 import REG from './Pages/Register'
 import HOMEPAGE from './Pages/HOMEPAGE'
-
+// localStorage.clear() 
 const App = () => {
   return (
     <div className='min-h-screen w-full transition-color bg-[#000015]'>
