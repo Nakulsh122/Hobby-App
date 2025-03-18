@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
-    console.log(url,body,LOG_REG,method,token)
+    // console.log(url,body,LOG_REG,method,token)
     switch (method) {
         case "POST":
             try {
@@ -9,7 +9,7 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
 
                     const response = await axios.post(url,body);
                     if(response){
-                        console.log(response)
+                        // console.log(response)
                         return response;
                     }
                 }else {
