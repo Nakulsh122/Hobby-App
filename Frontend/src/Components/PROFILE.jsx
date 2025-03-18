@@ -12,6 +12,8 @@ const PROFILE = () => {
   const [user, setUser] = useState(null);
   const [modalopen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [level,setlevel] = useState(0);
+  const [points ,setpoints] = useState(0);
 
   const handle_data = async () => {
     const { id } = jwtDecode(localStorage.getItem("Token"));
@@ -26,6 +28,11 @@ const PROFILE = () => {
     console.log("User Successfully updated");
     handle_data();
   };
+
+  const calc_level = (points) =>{
+    setlevel(Math.floor(points/1000));
+    setpoints(1000 - points%1000);
+  }
 
   const onclose = () => setModalOpen(false);
 
@@ -49,6 +56,8 @@ const PROFILE = () => {
               <p><span className="font-semibold">Mobile:</span> {user.mobile || "N/A"}</p>
               <p><span className="font-semibold">Account Created:</span> {new Date(user.created_at).toLocaleDateString()}</p>
               <p><span className="font-semibold">Total XP:</span> {user.total_xp}</p>
+              <p><span className="font-semibold">Level :</span> {level}</p>
+              <p><span className="font-semibold">Points till level up:</span> {points}</p>
               <p><span className="font-semibold">Total Hobbies:</span> {user.total_hobbies}</p>
               <p><span className="font-semibold">Completed Hobbies:</span> {user.completed_hobbies}</p>
             </div>

@@ -35,6 +35,8 @@ const AddHobby = async (req, res) => {
       return res.status(404).json({ error: true, message: "No data detected" });
   } catch (error) {
     res.status(500).json({ error: true, message: error.message });
+    console.log(error.message)
+    console.log(req.body)
   }
 };
 

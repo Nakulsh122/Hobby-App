@@ -1,15 +1,15 @@
 import React from 'react'
 import { Trash } from 'lucide-react';
 
-const STREAKHOBBYCARD = () => {
+const STREAKHOBBYCARD = ({data}) => {
   return (
     <> 
     <div className='flex-col space-y-5 font-mono bg-slate-100 w-64  rounded-md p-3'>
       <div >
-      <h1 className='font-mono font-bold text-lg'>Name of Hobby</h1>
-      <p>Date Started : </p>
-      <p>Longest Streak : </p>
-      <p>Current Streak :</p>
+      <h1 className='font-mono font-bold text-lg'>{data.hobbyName}</h1>
+      <p>Date Started : {data.created_at}</p>
+      <p>Longest Streak : {data.streakCount}</p>
+      <p>Current Streak : {data.streakCount}</p>
       </div>
       <div className='flex-col space-y-2'>
 

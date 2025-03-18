@@ -18,10 +18,10 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
                             authorization : `Bearer ${token}`
                         }
                     })
-                    if(response.error == false){
+                    if(response.error === false){
                         return response;
                     }else {
-                        console.log(response.message);
+                        console.log(response.data.message);
                     }
                 }
             } catch (error) {
