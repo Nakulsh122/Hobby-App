@@ -67,9 +67,9 @@ const HOMEPAGE = () => {
       <div className="w-3/4 p-4 text-center">
         <h2 className="text-2xl font-semibold mb-4">Your Hobbies</h2>
         <button className='p-2 m-auto bg-blue-500 rounded-md justify-center items-center text-white flex hover:opacity-90 active:opacity-95'onClick={()=> setHobbyModal(true)}><PlusCircleIcon className='size-5 mx-1'/><span>Add Hobbies</span></button>
-        <div className="grid grid-cols-3 gap-4 overflow-y-scroll">
+        <div className="mt-10 flex flex-wrap justify-center h-[80%] gap-4 overflow-y-scroll">
           {hobbies.map(hobby =>(
-            hobby.type === "progress" ? <PROGRESSHOBBYCARD key={hobby._id} data = {hobby} /> : <STREAKHOBBYCARD key={hobby._id} data={hobby} sendData={handleUpdate}/>
+            hobby.type === "progress" ? <PROGRESSHOBBYCARD  key={hobby._id} data = {hobby} /> : <STREAKHOBBYCARD key={hobby._id} data={hobby} sendData={handleUpdate}/>
           ))} 
         </div>
       </div>
