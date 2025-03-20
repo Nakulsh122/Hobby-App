@@ -58,7 +58,7 @@ const callAPI =async (url,method,body = {},LOG_REG = "",token="")=>{
             break;
         case "DELETE":
             try {
-                const response = await axios.put(url,{
+                const response = await axios.delete(url,{
                     headers : {
                         authorization : `Bearer ${token}`
                     }

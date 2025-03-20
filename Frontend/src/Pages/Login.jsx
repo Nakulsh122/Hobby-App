@@ -13,7 +13,7 @@ const LOGIN = () => {
             username : username,
             password : password
         }
-        const response = await callAPI(login_url,"POST",user,"LOGIN");
+        const response = await callAPI(login_url,"POST",user,"LOGIN",undefined);
         // console.log(response)
         localStorage.setItem("Token",response.data.token);
         localStorage.setItem("RefreshToken",response.data.refreshtoken)

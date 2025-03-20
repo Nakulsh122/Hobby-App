@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import callAPI from "../services/callAPI";
@@ -8,17 +7,23 @@ import { LogOutIcon, UserPen } from "lucide-react";
 
 const user_url_base = "http://localhost:5000/api/v1/user";
 
-const PROFILE = () => {
+const PROFILE = ({ sendUserScore, xp }) => {
   const [user, setUser] = useState(null);
   const [modalopen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  const [level,setlevel] = useState(0);
-  const [points ,setpoints] = useState(0);
+  const [level, setLevel] = useState(0);
+  const [xpPending, setXPPending] = useState(0); // Renamed from xppoints
 
+  // Fetch user data
   const handle_data = async () => {
     const { id } = jwtDecode(localStorage.getItem("Token"));
     const data = await callAPI(`${user_url_base}/${id}`, "GET", undefined, undefined, localStorage.getItem("Token"));
     setUser(data);
+
+    // Ensure XP is updated properly from fetched data
+    if (data.total_xp !== undefined) {
+      calc_level(data.total_xp);
+    }
   };
 
   const update_user = async (data) => {
@@ -29,16 +34,27 @@ const PROFILE = () => {
     handle_data();
   };
 
-  const calc_level = (points) =>{
-    setlevel(Math.floor(points/1000));
-    setpoints(1000 - points%1000);
-  }
+  const calc_level = (points) => {
+    let newLevel = Math.floor(points / 1000);
+    setLevel(newLevel);
+
+    let remainingXP = points % 1000 === 0 ? 0 : 1000 - (points % 1000);
+    setXPPending(remainingXP); // Update remaining XP
+
+    if (sendUserScore) {
+      sendUserScore(points);
+    }
+  };
 
   const onclose = () => setModalOpen(false);
 
   useEffect(() => {
     handle_data();
   }, []);
+
+  useEffect(() => {
+    calc_level(xp); // Ensure XP updates when changed
+  }, [xp]);
 
   return (
     <>
@@ -57,9 +73,9 @@ const PROFILE = () => {
               <p><span className="font-semibold">Account Created:</span> {new Date(user.created_at).toLocaleDateString()}</p>
               <p><span className="font-semibold">Total XP:</span> {user.total_xp}</p>
               <p><span className="font-semibold">Level :</span> {level}</p>
-              <p><span className="font-semibold">Points till level up:</span> {points}</p>
+              <p><span className="font-semibold">XP till level up:</span> {xpPending}</p>
               <p><span className="font-semibold">Total Hobbies:</span> {user.total_hobbies}</p>
-              <p><span className="font-semibold">Completed Hobbies:</span> {user.completed_hobbies}</p>
+
             </div>
             <div className="flex justify-around mt-6">
               <button
