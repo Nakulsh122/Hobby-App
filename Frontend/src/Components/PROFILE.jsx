@@ -4,10 +4,10 @@ import { jwtDecode } from 'jwt-decode';
 import callAPI from "../services/callAPI";
 import USERMODAL from "./UserModal";
 import { LogOutIcon, UserPen } from "lucide-react";
-
+import imagepath from '../assets/hobby.png'
 const user_url_base = "http://localhost:5000/api/v1/user";
 
-const PROFILE = ({ sendUserScore, xp }) => {
+const PROFILE = ({ sendUserScore, xp,length }) => {
   const [user, setUser] = useState(null);
   const [modalopen, setModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -19,8 +19,6 @@ const PROFILE = ({ sendUserScore, xp }) => {
     const { id } = jwtDecode(localStorage.getItem("Token"));
     const data = await callAPI(`${user_url_base}/${id}`, "GET", undefined, undefined, localStorage.getItem("Token"));
     setUser(data);
-
-    // Ensure XP is updated properly from fetched data
     if (data.total_xp !== undefined) {
       calc_level(data.total_xp);
     }
@@ -35,11 +33,11 @@ const PROFILE = ({ sendUserScore, xp }) => {
   };
 
   const calc_level = (points) => {
-    let newLevel = Math.floor(points / 1000);
+    let newLevel = Math.floor(points / 100);
     setLevel(newLevel);
 
-    let remainingXP = points % 1000 === 0 ? 0 : 1000 - (points % 1000);
-    setXPPending(remainingXP); // Update remaining XP
+    let remainingXP = points % 100 === 0 ? 0 : 100 - (points % 100);
+    setXPPending(remainingXP); 
 
     if (sendUserScore) {
       sendUserScore(points);
@@ -59,8 +57,9 @@ const PROFILE = ({ sendUserScore, xp }) => {
   return (
     <>
       {modalopen && <USERMODAL userData={user} isOpen={modalopen} onClose={onclose} onSave={update_user} />}
-      <div className="h-full rounded flex flex-col items-center justify-center bg-gray-900 text-white p-4">
+      <div className="h-full rounded flex flex-col items-center justify-evenly bg-gray-900 text-white p-4">
         <h1 className="text-4xl font-extrabold mb-6">Your Profile</h1>
+        <img src={imagepath} alt="" className="h-52 w-52 object-cover border-2 border-white rounded-full my-5" />
         {user ? (
           <div className="p-6 bg-gray-800 rounded-xl shadow-lg w-80 text-center">
             <div className="mb-4">
@@ -74,7 +73,7 @@ const PROFILE = ({ sendUserScore, xp }) => {
               <p><span className="font-semibold">Total XP:</span> {user.total_xp}</p>
               <p><span className="font-semibold">Level :</span> {level}</p>
               <p><span className="font-semibold">XP till level up:</span> {xpPending}</p>
-              <p><span className="font-semibold">Total Hobbies:</span> {user.total_hobbies}</p>
+              <p><span className="font-semibold">Total Hobbies:{length}</span></p>
 
             </div>
             <div className="flex justify-around mt-6">

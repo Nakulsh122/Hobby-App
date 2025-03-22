@@ -8,8 +8,7 @@
     lastname : { type : String},
     mobile : {type : Number},
     created_at: { type: Date, default: Date.now },
-    total_xp : {type : Number , default : 0},
-    total_hobbies : {type : Number , default : 0},  
+    total_xp : {type : Number , default : 0},  
   });
 
   module.exports = mongoose.model("User", User);

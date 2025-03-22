@@ -6,6 +6,7 @@ const Hobbies = new mongoose.Schema({
   hobbyName: { type: String, required: true },
   type: { type: String, enum: ["streak", "progress"], required: true },
   streakCount: { type: Number, default: 0 },
+  longestStreak :{type : Number , default : 0},
   lastupdated: { type: Date },
   progress: {
     unit: { type: String },

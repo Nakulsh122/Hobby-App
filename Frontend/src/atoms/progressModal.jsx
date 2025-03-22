@@ -1,37 +1,41 @@
 import React, { useEffect, useState } from "react";
 
-const PROGRESSMODAL = ({ data, onClose, onSave}) => {
-  const [addition, setAddition] = useState("")
-  const [hobbyData,setData] = useState({});
+const PROGRESSMODAL = ({ data, onClose, onSave, onComplete }) => {
+  const [addition, setAddition] = useState("");
+  const [hobbyData, setData] = useState({});
 
   const handleChange = (e) => {
     setAddition(Number(e.target.value));
-    console.log(addition);
   };
+
   const handleSubmit = () => {
+    let newProgress = data.progress.currentProgress + addition;
+    if (newProgress >= data.progress.totalGoal) {
+      newProgress = data.progress.totalGoal;
+      onComplete();
+    }
+
     const updatedHobby = {
       ...data,
       progress: {
         ...data.progress,
-        currentProgress: data.progress.currentProgress + addition,
+        currentProgress: newProgress
       },
     };
-  
+    
     onSave(updatedHobby);
     onClose();
   };
-  
-  
-  useEffect(()=>{
-    setData(data)
-    console.log(hobbyData)
-  },[hobbyData]);
+
+  useEffect(() => {
+    setData(data);
+  }, [data]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-5 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">Update Progress</h2>
-        <p className="mb-2">Current Progress:{data?.progress?.currentProgress}</p>
+        <p className="mb-2">Current Progress: {data?.progress?.currentProgress}</p>
         <label className="block mb-2">Add Progress:</label>
         <input 
           type="number" 

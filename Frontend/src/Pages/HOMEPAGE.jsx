@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import NAVBAR from '../Components/Navbar'
 import callAPI from '../services/callAPI';
 import PROFILE from '../Components/PROFILE';
 import STREAKHOBBYCARD from '../Components/StreakHobbyCard';
@@ -33,17 +32,13 @@ const HOMEPAGE = () => {
     const data = { ...hobbydata, userId: id };
 
     try {
-      // Add new hobby
+  
       await callAPI(`${hobbies_url_base}`, "POST", data, undefined, localStorage.getItem("Token"));
 
-      // Increase XP by 50
+  
       const newXP = userpoints + 50;
       handlepointsUpdate(newXP);
-
-      // Update total hobbies count
       updateTotalHobbies();
-
-      // Refresh the hobby list dynamically
       getHobbiesData();
     } catch (error) {
       console.error("Error adding hobby:", error);
@@ -54,16 +49,9 @@ const HOMEPAGE = () => {
     const { id } = jwtDecode(localStorage.getItem("Token"));
 
     try {
-      // Fetch current user data
       const userData = await callAPI(`${user_url_base}/${id}`, "GET", undefined, undefined, localStorage.getItem("Token"));
-
-      // Increment total hobbies count
       const updatedHobbiesCount = (userData.total_hobbies || 0) + 1;
-
-      // Update the backend
       await callAPI(`${user_url_base}/${id}`, "PUT", { total_hobbies: updatedHobbiesCount }, undefined, localStorage.getItem("Token"));
-
-      // Refresh profile data dynamically
       getHobbiesData();
     } catch (error) {
       console.error("Error updating total hobbies count:", error);
@@ -90,16 +78,11 @@ const HOMEPAGE = () => {
     const { id } = jwtDecode(localStorage.getItem("Token"));
 
     try {
-      // Fetch current user data
       const userData = await callAPI(`${user_url_base}/${id}`, "GET", undefined, undefined, localStorage.getItem("Token"));
 
-      // Decrement total hobbies count, ensuring it doesn't go below 0
       const updatedHobbiesCount = Math.max((userData.total_hobbies || 1) - 1, 0);
-
-      // Update the backend
       await callAPI(`${user_url_base}/${id}`, "PUT", { total_hobbies: updatedHobbiesCount }, undefined, localStorage.getItem("Token"));
 
-      // Refresh profile data dynamically
       getHobbiesData();
     } catch (error) {
       console.error("Error decreasing total hobbies count:", error);
@@ -129,11 +112,10 @@ const HOMEPAGE = () => {
   return (
     <div>
       {hobbyModal && <HOBBYMODAL isOpen={hobbyModal} onClose={closeModal} onSave={addHobby} />}
-      <NAVBAR />
       <div className="flex h-screen bg-gray-100 p-4">
         {/* Profile Section (30%) */}
         <div className="w-1/4 min-w-[400px] bg-white rounded-lg shadow-md p-4">
-          <PROFILE sendUserScore={handlepoints} xp={userpoints} />
+          <PROFILE sendUserScore={handlepoints} xp={userpoints} length={hobbies.length} />
         </div>
 
         {/* Hobbies Grid (70%) */}
@@ -142,7 +124,7 @@ const HOMEPAGE = () => {
           <button className='p-2 m-auto bg-blue-500 rounded-md justify-center items-center text-white flex hover:opacity-90 active:opacity-95' onClick={() => setHobbyModal(true)}><PlusCircleIcon className='size-5 mx-1' /><span>Add Hobbies</span></button>
           <div className="mt-10 flex flex-wrap justify-center h-[70%] gap-4 overflow-y-scroll">
             {hobbies.map(hobby => (
-              hobby.type === "progress" ? <PROGRESSHOBBYCARD key={hobby._id} data={hobby} sendData={handleUpdate} deleteHobby={deleteHobby} points={userpoints} sendBackPoints={handlepointsUpdate} /> : <STREAKHOBBYCARD key={hobby._id} data={hobby} sendData={handleUpdate} deleteHobby={deleteHobby} points={userpoints} sendBackPoints={handlepointsUpdate} />
+              hobby.type === "progress" ? <PROGRESSHOBBYCARD key={hobby._id} id={hobby._id} data={hobby} sendData={handleUpdate} deleteHobby={deleteHobby} points={userpoints} sendBackPoints={handlepointsUpdate} /> : <STREAKHOBBYCARD key={hobby._id} data={hobby} sendData={handleUpdate} deleteHobby={deleteHobby} points={userpoints} sendBackPoints={handlepointsUpdate} />
             )) || <p>No Hobbies present</p>}
           </div>
         </div>
